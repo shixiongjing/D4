@@ -18,14 +18,15 @@ class Net
         puts line
         line = line.strip
         content = line.split(';')
-        @letter_arr[content[0].to_i()] = content[1]
+        content[0] = content[0].to_i
+        @letter_arr[content[0]] = content[1]
         if content[2].nil?
-          puts 'here1'
-          @end_point[num_end] = content[0].to_i
+          puts 'end point:' + content[0].to_s
+          @end_point[num_end] = content[0]
           num_end += 1
         else
           dest = content[2].split(',')
-          @net_arr[content[0].to_i()] = dest
+          @net_arr[content[0]] = dest
           for x in dest
             x = x.to_i
             @rev_arr[x] = [] if @rev_arr[x].nil?
@@ -37,27 +38,32 @@ class Net
   end
 
   def find_word
-    str = nil
     @max_length = 0
     for ep in @end_point
-      traverse ep, 0, @letter_arr[ep]
+      traverse ep, 1, @letter_arr[ep]
     end
     @max_word
   end
 
   def traverse (start, length, str)
+    puts 'new_turn, max_length: '+@max_length.to_s
+    puts str
     unless @trie.get(str).nil?
       if length >= @max_length
-        @max_word = [] if length > @max_length
+        if length > @max_length
+          @max_word = [] 
+          @max_length = length
+        end
         @max_word << @trie.get(str)
+        puts 'add:'+str
       end
     end
 
-    if @trie.has_children(str)?
+    if @trie.has_children?(str) && !@rev_arr[start].nil?
       @rev_arr[start].each do |x|
-        traverse(x, length+1, insert_sort(str, letter_arr[x]))
+        traverse(x, length+1, insert_sort(str, @letter_arr[x]))
       end
     end
   end
-  
+
 end

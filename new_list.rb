@@ -2,5 +2,4 @@ require_relative 'sort_dict'
 
 dict = DictSorted.new
 dict.read_in
-dict.map_two
-dict.export
+dict.add_to_trie_index

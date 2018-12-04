@@ -5,9 +5,9 @@ class HelperMethodTest < Minitest::Test
 
   # Test that sort works
   def test_insert_sort
-  	arr = ['a', 'g', 'l', 'p']
-    char = 'j'
-    assert insert_sort(arr, char), ['a', 'g', 'j', 'l', 'p']
+  	arr = 'EK'
+    char = 'C'
+    assert insert_sort(arr, char), 'CEK'
   end
 
   # Test that sort works if the element will be moved to head

@@ -13,7 +13,7 @@ class DictSorted
 
   def read_in
     @original = File.readlines('wordlist.txt')
-    @original = @original.collect{ strip }
+    @original = @original.collect{|x| x.strip }
     @modified = @original.map{ |word| word.chars.sort(&:casecmp).join }
   end
 
@@ -23,6 +23,16 @@ class DictSorted
       @t.add(@modified[i], @original[i])
       i += 1
     end
+  end
+
+  def add_to_trie_index
+    i = 0
+    while i < @original.length
+      @t.add(@modified[i].upcase, i)
+      i += 1
+    end
+    @t.save('newlist')
+    puts @original.length
   end
 
   def export
