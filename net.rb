@@ -47,7 +47,7 @@ class Net
 
   def traverse (start, length, str)
     puts 'new_turn, max_length: '+@max_length.to_s
-    puts str
+    puts str + length.to_s
     unless @trie.get(str).nil?
       if length >= @max_length
         if length > @max_length
@@ -56,6 +56,7 @@ class Net
         end
         @max_word << @trie.get(str)
         puts 'add:'+str
+        puts 'strings:' + @max_word.to_s
       end
     end
 
