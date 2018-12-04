@@ -3,7 +3,7 @@
 def insert_sort(arr, char)
   idx = arr.length
   arr << char
-  unless (arr[idx - 1] <= char)|| idx.zero?
+  until (idx.zero?) or (arr[idx - 1] <= char)
     idx -= 1
     arr[idx + 1], arr[idx] = arr[idx], arr[idx + 1]
   end
