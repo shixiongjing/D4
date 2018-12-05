@@ -3,34 +3,32 @@ require 'trie'
 require_relative 'helper'
 
 class Net
-  
+  attr_accessor :rev_arr, :max_word
   # Constructor of a network
-  def initialize s, trie
-    File.open(s, "r") do |f|
-      num_end = 0
-      @max_word = []
-      @end_point = []
-      @letter_arr = Array.new
-      @net_arr = Array.new
-      @rev_arr = Array.new
-      @trie = trie
-      f.each_line do |line|
-        line = line.strip
-        content = line.split(';')
-        content[0] = content[0].to_i
-        @letter_arr[content[0]] = content[1]
-        if content[2].nil?
-          #puts 'end point:' + content[0].to_s
-          @end_point[num_end] = content[0]
-          num_end += 1
-        else
-          dest = content[2].split(',')
-          @net_arr[content[0]] = dest
-          for x in dest
-            x = x.to_i
-            @rev_arr[x] = [] if @rev_arr[x].nil?
-            @rev_arr[x] << content[0]
-          end
+  def initialize f, trie
+    
+    num_end = 0
+    @max_word = []
+    @end_point = []
+    @letter_arr = Array.new
+    @net_arr = Array.new
+    @rev_arr = Array.new
+    @trie = trie
+    f.each_line do |line|
+      line = line.strip
+      content = line.split(';')
+      content[0] = content[0].to_i
+      @letter_arr[content[0]] = content[1]
+      if content[2].nil?
+        @end_point[num_end] = content[0]
+        num_end += 1
+      else
+        dest = content[2].split(',')
+        @net_arr[content[0]] = dest
+        for x in dest
+          x = x.to_i
+          @rev_arr[x] = [] if @rev_arr[x].nil?
+          @rev_arr[x] << content[0]
         end
       end
     end
@@ -61,7 +59,6 @@ class Net
             temp = temp + '.'
           end
         end
-        #puts 'add:'+str
       end
     end
 
@@ -71,5 +68,4 @@ class Net
       end
     end
   end
-
 end
