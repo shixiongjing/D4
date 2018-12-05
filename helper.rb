@@ -29,5 +29,5 @@ def check_args(argv)
 end
 
 def read_dictionary
-  dict = File.readlines('wordlist.txt')
+  File.readlines('wordlist.txt')
 end
