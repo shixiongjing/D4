@@ -3,12 +3,17 @@ require_relative 'net'
 
 class HelperMethodTest < Minitest::Test
 
-  def test_initialization
+  def setup
     file_mock = Minitest::Mock.new
-    file_mock.expect(:each_line, ["1;C;2,3", "2;B;6"].to_enum(:each))
-    temp_net = Net.new(file_mock, nil)
-    puts temp_net.rev_arr
-    assert_equal temp_net.rev_arr, []
+    def file_mock.each_line;["1;C;2,3", "2;B;6"].collect!;end
+    @net = Net.new(file_mock, nil)
+    puts @net.rev_arr
+    assert_equal @net.rev_arr, []
+  end
+
+  def test_find_word_empty
+    result = @net.find_word
+    assert result, []
   end
   # Test that sort works
   
