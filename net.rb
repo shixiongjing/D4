@@ -6,7 +6,6 @@ class Net
   attr_accessor :rev_arr, :max_word
   # Constructor of a network
   def initialize(file, trie)
-    num_end = 0
     @max_word = []
     @end_point = []
     @letter_arr = []
@@ -18,8 +17,7 @@ class Net
       content[0] = content[0].to_i
       @letter_arr[content[0]] = content[1]
       if content[2].nil?
-        @end_point[num_end] = content[0]
-        num_end += 1
+        @end_point << content[0]
       else
         dest = content[2].split(',')
         dest.each do |x|
@@ -47,6 +45,7 @@ class Net
           @max_length = length
         end
         @max_word << @trie.get(str)
+        # Check if there are other words with the same sorted form (stored with '.' extended)
         if @trie.has_key?(str + '.')
           temp = str.dup + '.'
           @max_word << @trie.get(temp)
@@ -58,7 +57,7 @@ class Net
         end
       end
     end
-
+    # Check all the linked nodes, call self on them
     @rev_arr[start].each { |x| traverse(x, length + 1, insert_sort(str, @letter_arr[x])) } unless @rev_arr[start].nil?
   end
 end
