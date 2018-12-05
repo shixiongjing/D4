@@ -1,20 +1,19 @@
-
 require 'trie'
 require_relative 'helper'
 
+# Class of networks
 class Net
   attr_accessor :rev_arr, :max_word
   # Constructor of a network
-  def initialize f, trie
-    
+  def initialize(file, trie)
     num_end = 0
     @max_word = []
     @end_point = []
-    @letter_arr = Array.new
-    @net_arr = Array.new
-    @rev_arr = Array.new
+    @letter_arr = []
+    @net_arr = []
+    @rev_arr = []
     @trie = trie
-    f.each_line do |line|
+    file.each_line do |line|
       line = line.strip
       content = line.split(';')
       content[0] = content[0].to_i
@@ -25,7 +24,7 @@ class Net
       else
         dest = content[2].split(',')
         @net_arr[content[0]] = dest
-        for x in dest
+        dest.each do |x|
           x = x.to_i
           @rev_arr[x] = [] if @rev_arr[x].nil?
           @rev_arr[x] << content[0]
@@ -36,36 +35,32 @@ class Net
 
   def find_word
     @max_length = 0
-    for ep in @end_point
+    @end_point.each do |ep|
       traverse ep, 1, @letter_arr[ep]
     end
     @max_word
   end
 
-  def traverse (start, length, str)
+  def traverse(start, length, str)
     unless @trie.get(str).nil?
       if length >= @max_length
         if length > @max_length
-          @max_word = [] 
+          @max_word = []
           @max_length = length
         end
         @max_word << @trie.get(str)
-        if @trie.has_key?(str+'.')
-          temp = (str.dup) + '.'
+        if @trie.has_key?(str + '.')
+          temp = str.dup + '.'
           @max_word << @trie.get(temp)
-          temp = temp + '.'
+          temp += '.'
           while @trie.has_key?(temp)
             @max_word << @trie.get(temp)
-            temp = temp + '.'
+            temp += '.'
           end
         end
       end
     end
 
-    if !@rev_arr[start].nil?
-      @rev_arr[start].each do |x|
-        traverse(x, length+1, insert_sort(str, @letter_arr[x]))
-      end
-    end
+    @rev_arr[start].each { |x| traverse(x, length + 1, insert_sort(str, @letter_arr[x])) } unless @rev_arr[start].nil?
   end
 end
