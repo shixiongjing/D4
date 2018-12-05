@@ -26,13 +26,11 @@ class DictSorted
       # If Path is different, add another node
       while !(@t.get(@modified[i].upcase).nil?)
         @modified[i] = @modified[i] + '.'
-        puts @modified[i]
       end
       @t.add(@modified[i].upcase, i)
       i += 1
     end
     @t.save('newlist')
-    #puts @original.length
   end
 
 end
