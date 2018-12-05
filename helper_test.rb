@@ -20,6 +20,12 @@ class HelperMethodTest < Minitest::Test
     val = check_args(test)
     assert_equal true, val
   end
+  
+  def test_not_exit
+      test = ['uyhnuhgtfgt']
+      val = check_args(test)
+      assert_equal false, val
+  end
 
   # Test that sort works
   def test_insert_sort
