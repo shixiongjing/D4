@@ -10,7 +10,6 @@ class Net
     @max_word = []
     @end_point = []
     @letter_arr = []
-    @net_arr = []
     @rev_arr = []
     @trie = trie
     file.each_line do |line|
@@ -23,7 +22,6 @@ class Net
         num_end += 1
       else
         dest = content[2].split(',')
-        @net_arr[content[0]] = dest
         dest.each do |x|
           x = x.to_i
           @rev_arr[x] = [] if @rev_arr[x].nil?
