@@ -3,7 +3,6 @@ require 'trie'
 # Class that read in a dictionary
 # Sort it and put into a new trie object
 class DictSorted
-
   def initialize
     @original = []
     @modified = []
@@ -14,9 +13,9 @@ class DictSorted
   def read_in(filename)
     raise 'File does not exist' until File.exist?(filename)
     @original = File.readlines(filename)
-    @original = @original.collect{|x| x.strip }
-    @modified = @original.map{ |word| word.chars.sort(&:casecmp).join }
-    true  
+    @original = @original.collect(&:strip)
+    @modified = @original.map { |word| word.chars.sort(&:casecmp).join }
+    true
   end
 
   def add_to_trie_index
@@ -24,13 +23,10 @@ class DictSorted
     while i < @original.length
       # Same sorted word
       # If Path is different, add another node
-      while !(@t.get(@modified[i].upcase).nil?)
-        @modified[i] = @modified[i] + '.'
-      end
+      @modified[i] = @modified[i] + '.' until @t.get(@modified[i].upcase).nil?
       @t.add(@modified[i].upcase, i)
       i += 1
     end
     @t.save('newlist')
   end
-
 end
