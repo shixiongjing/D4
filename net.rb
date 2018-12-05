@@ -15,13 +15,12 @@ class Net
       @rev_arr = Array.new
       @trie = trie
       f.each_line do |line|
-        puts line
         line = line.strip
         content = line.split(';')
         content[0] = content[0].to_i
         @letter_arr[content[0]] = content[1]
         if content[2].nil?
-          puts 'end point:' + content[0].to_s
+          #puts 'end point:' + content[0].to_s
           @end_point[num_end] = content[0]
           num_end += 1
         else
@@ -46,8 +45,6 @@ class Net
   end
 
   def traverse (start, length, str)
-    puts 'new_turn, max_length: '+@max_length.to_s
-    puts str + length.to_s
     unless @trie.get(str).nil?
       if length >= @max_length
         if length > @max_length
@@ -55,12 +52,20 @@ class Net
           @max_length = length
         end
         @max_word << @trie.get(str)
-        puts 'add:'+str
-        puts 'strings:' + @max_word.to_s
+        if @trie.has_key?(str+'.')
+          temp = (str.dup) + '.'
+          @max_word << @trie.get(temp)
+          temp = temp + '.'
+          while @trie.has_key?(temp)
+            @max_word << @trie.get(temp)
+            temp = temp + '.'
+          end
+        end
+        #puts 'add:'+str
       end
     end
 
-    if @trie.has_children?(str) && !@rev_arr[start].nil?
+    if !@rev_arr[start].nil?
       @rev_arr[start].each do |x|
         traverse(x, length+1, insert_sort(str, @letter_arr[x]))
       end

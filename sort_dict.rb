@@ -9,7 +9,7 @@ class DictSorted
     @modified = []
     @t = Trie.new
   end
-  attr_accessor :original, :modified
+  attr_accessor :original, :modified, :t
 
   def read_in(filename)
     raise 'File does not exist' until File.exist?(filename)
@@ -24,13 +24,11 @@ class DictSorted
     while i < @original.length
       # Same sorted word
       # If Path is different, add another node
-      if @t.has_key?(@modified[i])
-        while !(i.equal?(@t.get(@modified[i])))
-          
-        end
-      else
-        @t.add(@modified[i].upcase, i)
+      while !(@t.get(@modified[i].upcase).nil?)
+        @modified[i] = @modified[i] + '.'
+        puts @modified[i]
       end
+      @t.add(@modified[i].upcase, i)
       i += 1
     end
     @t.save('newlist')
