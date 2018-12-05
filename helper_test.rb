@@ -3,6 +3,18 @@ require_relative 'helper'
 
 class HelperMethodTest < Minitest::Test
 
+  def test_check_empty_args
+    test=[]
+    val = check_args(test)
+    assert_equal false, val
+  end
+
+  def test_check_more_than_one_args
+    test=['a', 'b']
+    val = check_args(test)
+    assert_equal false, val
+  end
+
   # Test that sort works
   def test_insert_sort
   	arr = 'ECK'
@@ -17,10 +29,3 @@ class HelperMethodTest < Minitest::Test
     assert insert_sort(arr, char), 'abcxz'
   end
 end
-
-
-
-
-
-
-

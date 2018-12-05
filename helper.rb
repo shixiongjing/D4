@@ -1,14 +1,15 @@
-
-
 def insert_sort(arr, char)
   idx = arr.length
-  arr << char
-  until (idx.zero?) or (arr[idx - 1] <= char)
+  temp = arr.dup
+  temp << char
+  until idx.zero? || (temp[idx - 1] <= char)
     idx -= 1
-    arr[idx + 1], arr[idx] = arr[idx], arr[idx + 1]
+    temp[idx + 1], temp[idx] = temp[idx], temp[idx + 1]
   end
-  puts 'sorted:' + arr
-  arr
+  # puts 'adding: ' + char
+  # puts 'orinigal: ' + arr
+  # puts 'sorted:' + temp
+  temp
 end
 
 def check_args(argv)

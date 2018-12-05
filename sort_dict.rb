@@ -9,35 +9,32 @@ class DictSorted
     @modified = []
     @t = Trie.new
   end
-  attr_accessor :original, :modified, :joined
+  attr_accessor :original, :modified
 
-  def read_in
-    @original = File.readlines('wordlist.txt')
+  def read_in(filename)
+    raise 'File does not exist' until File.exist?(filename)
+    @original = File.readlines(filename)
     @original = @original.collect{|x| x.strip }
     @modified = @original.map{ |word| word.chars.sort(&:casecmp).join }
-  end
-
-  def map_two
-    i = 0
-    while i < @original.length
-      @t.add(@modified[i], @original[i])
-      i += 1
-    end
+    true  
   end
 
   def add_to_trie_index
     i = 0
     while i < @original.length
-      @t.add(@modified[i].upcase, i)
+      # Same sorted word
+      # If Path is different, add another node
+      if @t.has_key?(@modified[i])
+        while !(i.equal?(@t.get(@modified[i])))
+          
+        end
+      else
+        @t.add(@modified[i].upcase, i)
+      end
       i += 1
     end
     @t.save('newlist')
-    puts @original.length
-  end
-
-  def export
-    @t.save('newlist')
-    puts @t.get("ab")
+    #puts @original.length
   end
 
 end
