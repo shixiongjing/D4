@@ -15,6 +15,12 @@ class HelperMethodTest < Minitest::Test
     assert_equal false, val
   end
 
+  def test_check_one_arg
+    test=['net.rb']
+    val = check_args(test)
+    assert_equal true, val
+  end
+
   # Test that sort works
   def test_insert_sort
   	arr = 'ECK'
